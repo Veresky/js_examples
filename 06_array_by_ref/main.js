@@ -6,6 +6,14 @@ function simpleSort(arr) {
 	arr.sort(function (a, b) { return b-a})
 }
 
+var array2 = ['f', 'o', 'o'];
+
+simpleConcat(array2);
+function simpleConcat(arr) {
+	arr.concat(['b','a','r']);
+}
+
 
 
 console.log(array);
+console.log(array2);
