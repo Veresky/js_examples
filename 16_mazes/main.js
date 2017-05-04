@@ -22,7 +22,7 @@ function findFreeNumber(array) {
     return 1;
   }
 
-  return  max + 1;
+  return max + 1;
 }
 
 function Maze() {
@@ -32,7 +32,7 @@ function Maze() {
 
 
   this.cellsCount = 0;
-  this.rowsCount = 20;
+  this.rowsCount = 30;
   this.UNIT = this.XMAX / this.rowsCount;
 
   this.initCells();
@@ -87,7 +87,22 @@ Maze.prototype.initCells = function () {
       }
 
       if (!row[i].rightBorder) {
-        row[i + 1].set = row[i].set;
+        var setOld, setNew;
+        if (row[i + 1].set > row[i].set) {
+          setOld = row[i + 1].set;
+          setNew = row[i].set;
+        } else {
+          setOld = row[i].set;
+          setNew = row[i + 1].set;
+        }
+        for (var k = this.rowsCount - 1; k >= 0; k--) {
+          if (row[k].set == setOld) {
+            row[k].set = setNew;
+          }
+
+        }
+
+
       }
     }
 
