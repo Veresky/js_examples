@@ -7,20 +7,22 @@ var COLORS = {
 };
 
 function findFreeNumber(array) {
-  var freeNumber = 1;
+  var setsNumbersArray = [];
 
-  while(true) {
-
-    var numberIsFree = array.every(function(element) {
-      return element.set != freeNumber;
-    });
-
-    if (numberIsFree) {
-      break;
+  for (var i = array.length - 1; i >= 0; i--) {
+    if (array[i].set) {
+      setsNumbersArray.push(array[i].set);
+      var setsExist = true;
     }
-    freeNumber++;
   }
-  return freeNumber;
+
+  if (setsExist == true) {
+    var max = Math.max.apply(null, setsNumbersArray);
+  } else {
+    return 1;
+  }
+
+  return  max + 1;
 }
 
 function Maze() {
@@ -111,7 +113,7 @@ Maze.prototype.initCells = function () {
       for (var i = 0; i < this.rowsCount - 1; i++) {
         if (row[i].set != row[i + 1].set) {
           row[i].rightBorder = 0;
-          row[i+1].set = row[i].set;
+          row[i + 1].set = row[i].set;
         }
       }
 
@@ -136,12 +138,18 @@ Maze.prototype.drawCells = function () {
   for (var j = 0; j < this.rowsCount; j++) {
     for (var i = 0; i < this.rowsCount; i++) {
       var cell = this.cells[j][i];
+      this.drawCellSet(cell);
       if (cell.upperBorder) this.drawCellBorder(cell, 'upper');
       if (cell.leftBorder) this.drawCellBorder(cell, 'left');
       if (cell.rightBorder) this.drawCellBorder(cell, 'right');
       if (cell.lowerBorder) this.drawCellBorder(cell, 'lower');
     }
   }
+};
+
+Maze.prototype.drawCellSet = function (cell) {
+  this.ctx.font = "10px Arial";
+  this.ctx.fillText(cell.set, cell.x + 5, cell.y + 15);
 };
 
 Maze.prototype.drawCellBorder = function (cell, borderType) {
