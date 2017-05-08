@@ -32,12 +32,17 @@ function Maze() {
 
 
   this.cellsCount = 0;
-  this.rowsCount = 30;
+  this.rowsCount = 40;
   this.UNIT = this.XMAX / this.rowsCount;
 
+  this.generate();
+}
+
+Maze.prototype.generate = function() {
+  this.ctx.clearRect(0, 0, this.XMAX, this.YMAX);
   this.initCells();
   this.drawCells();
-}
+};
 
 Maze.prototype.initCells = function () {
   this.cells = [];
@@ -87,22 +92,7 @@ Maze.prototype.initCells = function () {
       }
 
       if (!row[i].rightBorder) {
-        var setOld, setNew;
-        if (row[i + 1].set > row[i].set) {
-          setOld = row[i + 1].set;
-          setNew = row[i].set;
-        } else {
-          setOld = row[i].set;
-          setNew = row[i + 1].set;
-        }
-        for (var k = this.rowsCount - 1; k >= 0; k--) {
-          if (row[k].set == setOld) {
-            row[k].set = setNew;
-          }
-
-        }
-
-
+        this.replaceSetWithGreaterIndex(row, i);
       }
     }
 
@@ -123,13 +113,16 @@ Maze.prototype.initCells = function () {
       }
     }
 
+    //last row generation
     if (j == this.rowsCount - 1) {
 
       for (var i = 0; i < this.rowsCount - 1; i++) {
+
         if (row[i].set != row[i + 1].set) {
           row[i].rightBorder = 0;
-          row[i + 1].set = row[i].set;
+          this.replaceSetWithGreaterIndex(row, i);
         }
+
       }
 
     }
@@ -149,11 +142,29 @@ Maze.prototype.initCells = function () {
 
 };
 
+Maze.prototype.replaceSetWithGreaterIndex = function(row, ind) {
+  var setOld, setNew;
+
+  if (row[ind + 1].set > row[ind].set) {
+    setOld = row[ind + 1].set;
+    setNew = row[ind].set;
+  } else {
+    setOld = row[ind].set;
+    setNew = row[ind + 1].set;
+  }
+
+  for (var k = this.rowsCount - 1; k >= 0; k--) {
+    if (row[k].set == setOld) {
+      row[k].set = setNew;
+    }
+  }
+};
+
 Maze.prototype.drawCells = function () {
   for (var j = 0; j < this.rowsCount; j++) {
     for (var i = 0; i < this.rowsCount; i++) {
       var cell = this.cells[j][i];
-      this.drawCellSet(cell);
+      // this.drawCellSet(cell);
       if (cell.upperBorder) this.drawCellBorder(cell, 'upper');
       if (cell.leftBorder) this.drawCellBorder(cell, 'left');
       if (cell.rightBorder) this.drawCellBorder(cell, 'right');
