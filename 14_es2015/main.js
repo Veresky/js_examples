@@ -14,3 +14,21 @@ var [a, b, ...other] = simpleArray;
 console.log(a);
 console.log(b);
 console.log(other);
+
+
+{
+  var options = {
+    firstName: 'Ivan',
+    birthday: '01/07/1995',
+    color: 'green'
+  };
+
+  let {firstName: a, birthday: b, color: c} = options;
+
+  console.log(a);
+  console.log(b);
+  console.log(c);
+  
+}
+
+
