@@ -6,6 +6,8 @@ var COLORS = {
   red: 'rgb(200, 0, 0)'
 };
 
+  var INDENT = 2;
+
 function findFreeNumber(array) {
   var setsNumbersArray = [];
 
@@ -25,15 +27,18 @@ function findFreeNumber(array) {
   return max + 1;
 }
 
+function getRandomInt(min, max) {
+  return Math.floor(Math.random() * (max - min)) + min;
+}
+
 function Maze() {
   this.ctx = canvas.getContext('2d');
-  this.XMAX = $(canvas).attr('width');
-  this.YMAX = $(canvas).attr('height');
+  this.XMAX = $(canvas).attr('width') - 2*INDENT;
+  this.YMAX = $(canvas).attr('height') - 2*INDENT;
 
 
-  this.cellsCount = 0;
-  this.rowsCount = 40;
-  this.UNIT = this.XMAX / this.rowsCount;
+  this.rowsCount = 30;
+  this.UNIT = (this.XMAX - 2*INDENT) / this.rowsCount;
 
   this.generate();
 }
@@ -59,8 +64,8 @@ Maze.prototype.initCells = function () {
   for (var j = 0; j < this.rowsCount; j++) {
 
     for (var i = 0; i < this.rowsCount; i++) {
-      row[i].x = i * this.UNIT;
-      row[i].y = j * this.UNIT;
+      row[i].x = INDENT + i * this.UNIT;
+      row[i].y = INDENT + j * this.UNIT;
     }
 
     if (j != 0) {
@@ -130,7 +135,11 @@ Maze.prototype.initCells = function () {
     this.cells.push(newArr);
   }
 
-  //create outer borders;
+  this.createEntrances();
+
+};
+
+Maze.prototype.createOuterBorders = function () {
   for (var i = 0; i < this.rowsCount; i++) {
     this.cells[0][i].upperBorder = 1;
     this.cells[this.rowsCount - 1][i].lowerBorder = 1;
@@ -138,7 +147,20 @@ Maze.prototype.initCells = function () {
     this.cells[i][0].leftBorder = 1;
     this.cells[i][this.rowsCount - 1].rightBorder = 1;
   }
+};
 
+Maze.prototype.createEntrances = function () {
+  this.createOuterBorders();
+  var side = getRandomInt(0, 2);
+  var cellNumber = getRandomInt(0, this.rowsCount);
+  var cellNumber2 = getRandomInt(0, this.rowsCount);
+  if (side == 1) {
+    this.cells[cellNumber][0].leftBorder = 0;
+    this.cells[cellNumber2][this.rowsCount - 1].rightBorder = 0;
+  } else {
+    this.cells[0][cellNumber].upperBorder = 0;
+    this.cells[this.rowsCount - 1][cellNumber2].lowerBorder = 0;
+  }
 
 };
 
