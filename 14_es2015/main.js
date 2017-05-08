@@ -16,19 +16,37 @@ console.log(b);
 console.log(other);
 
 
-{
-  var options = {
-    firstName: 'Ivan',
-    birthday: '01/07/1995',
-    color: 'green'
-  };
+// function defer(f, ms) {
+//   return function() {
+//     setTimeout(() => f.apply(this, arguments), ms)
+//   }
+// }
 
-  let {firstName: a, birthday: b, color: c} = options;
+// function defer(f, ms) {
+//   return function() {
+//     let args = arguments;
+//     let ctx = this;
+//     setTimeout(function() {
+//       return f.apply(ctx, args);
+//     }, ms);
+//   }
+// }
 
-  console.log(a);
-  console.log(b);
-  console.log(c);
-  
+
+function defer(f, ms) {
+  return function() {
+    let args = arguments;
+    let ctx = this;
+    setTimeout(function() {
+      f.apply(ctx, args);
+    }, ms);
+  }
 }
 
+function sayHi(who) {
+  alert('Привет, ' + who);
+}
 
+debugger;
+let sayHiDeferred = defer(sayHi, 2000);
+sayHiDeferred("Вася"); // Привет, Вася через 2 секунды

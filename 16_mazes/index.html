@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="styles.css">
+    <script src="jquery-3.2.1.min.js"></script>
+	<title>Maze generation</title>
+</head>
+<body>
+<div class="content-container">
+    <h1>Maze generator</h1>
+    <div id="initial-description" tabindex="0">Maze generator</div>
+    <canvas id="canvas-element" width="600" height="600">
+
+    </canvas>
+    <div class="menu">
+        <button id="restart-button">Restart</button>
+        <button id="submit-button">Submit</button>
+    </div>
+    <div class="final-message" aria-live="polite">
+    </div>
+    <div id="aria-rotation-description" class="visually-hidden" aria-live="polite">
+    </div>
+    <div id="aria-position-description" class="visually-hidden" aria-live="polite">
+    </div>
+</div>
+
+<script src="main.js"></script>
+</body>
+</html>
